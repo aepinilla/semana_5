@@ -1,47 +1,62 @@
+int numBurbujas = 50;
+
 // Posicion
-float posX;
-float posY;
+float [] posX;
+float [] posY;
 
 // Velocidad
-float velocidadX;
-float velocidadY;
+float [] velocidadX;
+float [] velocidadY;
 
 // Direccion
-float direccionX;
-float direccionY;
-
-
+float [] direccionX;
+float [] direccionY;
 
 void setup() {
   noStroke();
   size(500, 500);
 
-  posX = 250;
-  posY = 250;
+  // Inicializacion
+  posX = new float[numBurbujas];
+  posY = new float[numBurbujas];
 
-  velocidadX = 1;
-  velocidadY = 1;
+  velocidadX = new float[numBurbujas];
+  velocidadY = new float[numBurbujas];
 
-  direccionX = 1;
-  direccionY = 1;
+  direccionX = new float[numBurbujas];
+  direccionY = new float[numBurbujas];
+
+  // Inicializar los valores de nuestro arrays
+  for (int i = 0; i < numBurbujas; i++) {
+    posX[i] = random(width);
+    posY[i] = random(height);
+
+    velocidadX[i] = random(10);
+    velocidadY[i] = random(10);
+
+    direccionX[i] = (random(1) > 0.5) ? 1 : -1;
+    direccionY[i] = (random(1) > 0.5) ? 1 : -1;
+  }
 }
 
 void draw() {
   background(255);
-  posX = posX + velocidadX * direccionX;
-  posY = posY + velocidadY * direccionY;
 
-  //                OR
-  if (posX >= width || posX <= 0) {
-    // Cambie la direccion del movimiento en el eje X
-    direccionX = direccionX * -1;
-  }
-  
-  if (posY >= height || posY <= 0) {
-    // Cambie la direccion del movimiento en el eje Y
-    direccionY = direccionY * -1;
-  }
+  for (int i = 0; i < numBurbujas; i++) {
+    posX[i] = posX[i] + velocidadX[i] * direccionX[i];
+    posY[i] = posY[i] + velocidadY[i] * direccionY[i];
 
-  fill(0);
-  ellipse(posX, posY, 50, 50);
+    if (posX[i] >= width || posX[i] <= 0) {
+      // Cambie la direccion del movimiento en el eje X
+      direccionX[i] = direccionX[i] * -1;
+    }
+
+    if (posY[i] >= height || posY[i] <= 0) {
+      // Cambie la direccion del movimiento en el eje Y
+      direccionY[i] = direccionY[i] * -1;
+    }
+
+    fill(0);
+    ellipse(posX[i], posY[i], 50, 50);
+  }
 }
